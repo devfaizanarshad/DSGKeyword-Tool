@@ -26,7 +26,7 @@ const AboutPage = () => {
             repeat: Infinity, // Set to loop indefinitely
             ease: "linear", // Linear easing for smooth motion
           }}
-          className="absolute top-10 rigth-8 z-10 -mt-2  translate-x-[-50%] translate-y-[-50%] max-md:[6%] lg:w-[40%]  flex justify-end items-center"
+          className="absolute top-10 rigth-8 z-10 -mt-2  translate-x-[-50%] translate-y-[-50%]  lg:w-[40%]  flex justify-end items-center"
         >
           <img src={AirManImag} alt="AirManImag" />
         </motion.div>
@@ -47,7 +47,7 @@ const AboutPage = () => {
             </h1>
           </span>
           <div className="relative z-10 ">
-            <span className="flex justify-between max-lg:flex-col max-lg:px-14  gap-12 items-center">
+            <span className="flex justify-between max-lg:flex-col max-lg:px-14 max-sm:px-4  gap-12 items-center">
               <img
                 src={AboutImag}
                 alt="About Image"
@@ -84,20 +84,20 @@ const AboutPage = () => {
         </span>
       </section>
      {/* middle Boxes section */}
-      <section className=" relative lg:w-[60%]  h-full  max-lg:space-y-28 flex flex-col   ">
-        <div className="mt-20 bg-gradient-to-br from-[#fcf0ee] via-[#f8c9c1] to-transparent w-[550px] p-16 space-y-5 rounded-lg shadow-lg">
+      <section className=" relative lg:w-[66%] max-md: px-6   h-full max-lg:space-y-36 max-xsm:space-y-60 space-y-10 flex flex-col   ">
+        <div className="mt-20 max-md:mt-5 w-[610px] max-md:w-full bg-gradient-to-br from-[#fcf0ee] via-[#f8c9c1] to-transparent  p-16  space-y-5 rounded-lg shadow-lg">
           <h3 className="text-2xl font-bold italic">theme-pure</h3>
-          <p className="text-lg italic">
+          <p className="text-lg flex-wrap  italic">
             We are in business to develop an SEO software that allows anyone to
             independently optimize and promote a website on the web, regardless
             of the level of expertise.
           </p>
         </div>
         <motion.div
-          initial={{ opacity: 1, y: -50 }}
+          initial={{ opacity: 1, y: 50 }}
           animate={{
             opacity: 1, // Maintain full opacity
-            y: "13%", // Move the image to 20% of the container's height
+            y: "4%", // Move the image to 20% of the container's height
           }}
           transition={{
             duration: 1, // Adjust the duration of the animation as needed
@@ -105,12 +105,12 @@ const AboutPage = () => {
             repeatType: "reverse", // Reverse the animation on each repeat
             ease: "linear", // Use linear easing for continuous motion
           }}
-          className="lg:absolute lg:w-52 w-28 lg:h-52 h-38  top-[12%] max-lg:left-1 right-[29%] -z-1"
+          className="absolute w-52  h-80 max-lg:top-[7%] top-[1%] max-lg:left-1 right-[29%] z-1"
         >
           <img src={emojy} alt="emoji of happy SEO" width={150} height={150} />
         </motion.div>
 
-        <div className="lg:absolute right-1 -bottom-44 bg-gradient-to-br from-[#d8ffef] via-[#7ddab3] to-transparent w-[550px] p-16 space-y-5 rounded-lg shadow-lg transform -translate-y-full">
+        <div className="absolute max-lg:relative max-md:w-full w-[610px]  right-1 -bottom-44 bg-gradient-to-br pt-16 from-[#d8ffef] via-[#7ddab3] to-transparent  p-16 space-y-5 rounded-lg shadow-lg transform -translate-y-full">
           <h3 className="font-serif italic text-2xl font-bold">tem-purpose</h3>
           <p className="text-lg italic">
             We aim to constantly improve the user experience, functionality, and
@@ -118,7 +118,7 @@ const AboutPage = () => {
             optimization.
           </p>
         </div>
-        <div className="relative bottom-6 left-1/4 max-lg:hidden block  z-10">
+        <div className="relative -top-16 left-1/4 max-lg:hidden block   z-10">
           <img src={seoMan} alt="" />
         </div>
       </section>

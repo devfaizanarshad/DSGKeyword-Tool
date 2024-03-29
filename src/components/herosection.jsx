@@ -6,7 +6,7 @@ import { RiSeoLine } from "react-icons/ri";
 
 const Herosection = () => {
   return (
-    <main className="min-h-screen bg-gradient-to-br pt-10 lg:pt-20 mx-auto from-[#361b68] to-[#31176381] flex justify-center items-center flex-col space-y-4 relative  ">
+    <main className="min-h-screen bg-gradient-to-br max-sm:pt-1 pt-10 lg:pt-20 mx-auto from-[#361b68] to-[#31176381] flex justify-center items-center flex-col space-y-5 max-sm:space-y-10 relative  ">
       {/* Animatio Box section  */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}

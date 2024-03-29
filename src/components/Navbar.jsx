@@ -11,8 +11,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-900 bg-opacity-85 py-4 px-2">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-gray-900 bg-opacity-85 py-4 px-2 ">
+      <div className="lg:container mx-auto px-3 flex justify-between items-center">
         <div className="text-white ">
           <img src={logo} alt="logo" />
         </div>
@@ -38,9 +38,9 @@ const Navbar = () => {
         </div>
           <button
             type="button"
-            className="text-white justify-end flex bg-gradient-to-r from-[#8253ff] to-[#6a98ff] hover:bg-gradient-to-br hover:from-[#6d4bd6] hover:to-[#6d4bd6] focus:ring-4 focus:ring-opacity-0 focus:outline-none outline-none border-none shadow-lg hover:shadow-purple-300/40 dark:shadow-lg font-medium rounded-3xl text-lg px-5 py-3 text-center "
+            className="text-white justify-end flex bg-gradient-to-r from-[#8253ff] to-[#6a98ff] hover:bg-gradient-to-br hover:from-[#6d4bd6] hover:to-[#6d4bd6] focus:ring-4 focus:ring-opacity-0 focus:outline-none outline-none border-none shadow-lg hover:shadow-purple-300/40 dark:shadow-lg font-medium rounded-3xl text-lg px-5 py-3 text-center max-xsm:hidden "
           >
-            <span className="md:hidden">Call Now</span>
+            <span className="md:hidden ">Call Now</span>
             <span className="hidden md:block">Free SEO Consultation</span>
           </button>
 

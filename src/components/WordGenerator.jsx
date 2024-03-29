@@ -344,7 +344,7 @@ const KeyWordGenerator = () => {
           <h2 className="md:text-3xl text-2xl font-serif font-bold text-white my-3">
             Location
           </h2>
-          <div className="grid grid-cols-2 gap-4 my-4 ">
+          <div className="grid grid-cols-2 max-md:grid-cols-1  gap-4 my-4 ">
             <select
               className="border border-purple-200 rounded text-gray-700 font-bold bg-gray-300 px-3 py-4 focus:outline-none  focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
               value={country}
@@ -370,9 +370,9 @@ const KeyWordGenerator = () => {
               ))}
             </select>
           </div>
-          <div className="flex w-full max-md:flex-col lg:gap-3">
+          <div className="flex w-full max-md:flex-col max-md:gap-1 gap-3">
             <div className="w-full">
-              <h2 className="md:text-3xl text-2xl font-serif font-bold text-white my-3">
+              <h2 className="xl:text-3xl max-xsm:text-[24px]  text-2xl font-serif font-bold text-white my-3">
                 Enter Area You Cover (in KM)
               </h2>
               <input
@@ -413,7 +413,7 @@ const KeyWordGenerator = () => {
               <h2 className="lg:text-4xl text-2xl   font-bold text-gray-200 mb-3">
                 User Information
               </h2>
-              <div className="grid lg:grid-cols-3 grid-cols-2  gap-3">
+              <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-3">
                 <p className="text-dark-white mb-2">
                   <span className="font-bold text-gray-900  text-2xl">
                     Name:
@@ -555,15 +555,15 @@ const KeyWordGenerator = () => {
       )}
        {/*  sucess pop up of keywords generated */}
       {showSuccessPopup && (
-        <div className="fixed top-5 -left-3 w-full h-fit flex justify-end items-start z-10">
+        <div className="fixed top-5 lg:-left-3 -left-1 w-full h-fit flex justify-end items-start z-10">
           <div
-            className="bg-green-200 lg:w-[35%] text-center flex text-lg xl:text-2xl  border-green-600 text-green-600 border-l-4 lg:py-6 p-4"
+            className="bg-green-200 lg:w-[35%] text-center flex text-sm xl:text-2xl  border-green-600 text-green-600 border-l-4 lg:py-6 p-4"
             role="alert"
           >
-            <p className="font-bold text-lg">Congratulations</p>
-            <p className="flex items-center text-lg ml-2">
+            <p className="font-bold text-lg max-md:text-sm">Congratulations</p>
+            <p className="flex items-center text-lg max-md:text-sm ml-2">
               Your keywords have been generated!{" "}
-              <ImHappy size={30} className="ml-6" />
+              <ImHappy size={30} className="ml-6 max-md:text-sm max-md:ml-1" />
             </p>
           </div>
         </div>
