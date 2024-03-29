@@ -13,7 +13,7 @@ const Herosection = () => {
         animate={{ opacity: 1, x: -1.0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
         className="absolute lg:w-52 w-24 lg:h-52 h-24 rounded-full top-[2%] max-lg:left-1  left-7 -z-1 bg-gradient-to-tr
-       from-yellow-600 to-sky-700"
+       from-yellow-600 to-sky-700   "
       ></motion.div>
 
       {/*  Seo tool section  */}
@@ -49,7 +49,7 @@ const Herosection = () => {
       </motion.p>
 
       {/* Animatio Box section  */}
-      <span className="hidden lg:block w-fit">
+      <span className="hidden xl:block w-fit">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}

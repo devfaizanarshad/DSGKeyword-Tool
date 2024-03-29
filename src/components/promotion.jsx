@@ -76,7 +76,7 @@ const SeoServicesPage = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: -1.0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
-                className="absolute lg:w-60 w-32 lg:h-60 h-32 rounded-full top-[35%] -right-32  bg-gradient-to-tr
+                className="absolute lg:w-60 w-32 lg:h-60 h-32 rounded-full top-[35%] lg:-right-32 -right-14  bg-gradient-to-tr
        from-[#af32bb9c] to-[#139e31b0]"
               ></motion.div>
             </div>

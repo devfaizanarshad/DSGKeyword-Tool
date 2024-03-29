@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { ImCross } from "react-icons/im";
 import logo from "../assets/Logo-1.png.webp";
+
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -15,24 +16,26 @@ const Navbar = () => {
         <div className="text-white ">
           <img src={logo} alt="logo" />
         </div>
-        <div className="hidden md:flex space-x-16  text-white text-xl font-semibold">
+        {/* Add SEO consultation button */}
+        {/* Conditional rendering for button based on screen size */}
+        <span className="flex justify-center items-center gap-9 max-lg:gap-4">
+
+        <div className=" max-lg:hidden flex space-x-12 gap-3    text-white text-2xl font-semibold">
           {/* Show menu items only on medium and larger screens */}
-          <Link to="/" className="text-white hover:text-yellow-500">
+            <Link to="/" className="text-white hover:text-yellow-500">
               Home
             </Link>
             <Link to="/about" className="text-white hover:text-yellow-500">
               About Us
             </Link>
-            <Link to="/Services" className="text-white hover:text-yellow-500">
+            {/* <Link to="/services" className="text-white hover:text-yellow-500">
               Services
-            </Link>
-            <Link to="/Contact" className="text-white hover:text-yellow-500">
+            </Link> */}
+            <Link to="/contact" className="text-white hover:text-yellow-500">
               Contact
             </Link>
+        
         </div>
-        {/* Add SEO consultation button */}
-        {/* Conditional rendering for button based on screen size */}
-        <span className="flex justify-center items-center gap-3">
           <button
             type="button"
             className="text-white justify-end flex bg-gradient-to-r from-[#8253ff] to-[#6a98ff] hover:bg-gradient-to-br hover:from-[#6d4bd6] hover:to-[#6d4bd6] focus:ring-4 focus:ring-opacity-0 focus:outline-none outline-none border-none shadow-lg hover:shadow-purple-300/40 dark:shadow-lg font-medium rounded-3xl text-lg px-5 py-3 text-center "
@@ -81,16 +84,16 @@ const Navbar = () => {
           </button>
           {/* Render menu items in the drawer */}
           <div className="flex flex-col gap-5 text-2xl py-2 space-y-2 p-3  font-extrabold  ">
-            <Link to="/" className="text-white hover:text-yellow-500">
+            <Link to="/" className="text-white hover:text-yellow-500" onClick={() => setIsDrawerOpen(false)}>
               Home
             </Link>
-            <Link to="/about" className="text-white hover:text-yellow-500">
+            <Link to="/about" className="text-white hover:text-yellow-500" onClick={() => setIsDrawerOpen(false)}>
               About Us
             </Link>
-            <Link to="/Services" className="text-white hover:text-yellow-500">
+            {/* <Link to="/services" className="text-white hover:text-yellow-500">
               Services
-            </Link>
-            <Link to="/Contact" className="text-white hover:text-yellow-500">
+            </Link> */}
+            <Link to="/contact" className="text-white hover:text-yellow-500" onClick={() => setIsDrawerOpen(false)}>
               Contact
             </Link>
           </div>
