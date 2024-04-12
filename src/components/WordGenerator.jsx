@@ -10,8 +10,10 @@ import { TbFileDownload } from "react-icons/tb";
 import businessTypes from "../DummyData/fake"; // Make sure this path is correct
 import Button from "./button";
 import countriesWithStates from "../DummyData/countries";
+// import LocationOptions from "./LocationOptions ";
 
 const KeyWordGenerator = () => {
+  const [selectedDiscipline, setSelectedDiscipline] = useState("");
   const [selectedBusinessType, setSelectedBusinessType] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const [showSelectedServices, setShowSelectedServices] = useState(false);
@@ -32,6 +34,10 @@ const KeyWordGenerator = () => {
   const [showInputGrid, setShowInputGrid] = useState(false);
   const [showStepMap, setShowStepMap] = useState(true);
   const [showLocationInputs, setShowLocationInputs] = useState(false); // Added state for showing location inputs
+  // Add state to manage whether to show the radio buttons
+
+ 
+
   const [showLoader, setShowLoader] = useState(false);
 
   const countries = countriesWithStates.map((country) => country.country);
@@ -90,7 +96,7 @@ const KeyWordGenerator = () => {
         break;
       }
     }
-// validation of input feilds
+    // validation of input feilds
     if (isValid) {
       const currentStepValue = steps[currentStep].value;
       if (currentStepValue.trim() === "") {
@@ -125,11 +131,24 @@ const KeyWordGenerator = () => {
     return re.test(website);
   };
 
+  // Function to handle location input and show location options
   const handleLocation = () => {
     setShowStepMap(false);
-    setShowLocationInputs(true); // Show location inputs when "Set Location" is clicked
+    setShowLocationInputs(true);
   };
 
+
+
+  const handleDisciplineChange = (event) => {
+    const discipline = event.target.value;
+    setShowSelectedServices(false);
+    setShowLocationInputs(false);
+    setShowInputGrid(false);
+
+    setSelectedBusinessType(false);
+  
+    setSelectedDiscipline(discipline);
+  };
 
   const handleBusinessTypeChange = (event) => {
     const type = event.target.value;
@@ -137,6 +156,8 @@ const KeyWordGenerator = () => {
     setSelectedServices([]);
     setShowSelectedServices(false);
     setShowLocationInputs(false);
+
+   
     setName("");
     setEmail("");
     setWebsite("");
@@ -154,12 +175,12 @@ const KeyWordGenerator = () => {
   // Function to handle radius change
   const handleRadiusChange = (e) => {
     const inputValue = e.target.value;
-    // Check if the input is a valid number
-    if (!isNaN(inputValue)) {
+    // Check if the input is a valid number and within the range of -0 to 100
+    if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
       setRadius(inputValue);
       setInvalidRadiusInput(false); // Clear the invalid input notification if input is valid
     } else {
-      setRadius(""); // Clear radius if input is not a number
+      setRadius(""); // Clear radius if input is not a number or not within range
       setInvalidRadiusInput(true); // Set state to show notification for invalid input
     }
   };
@@ -175,7 +196,8 @@ const KeyWordGenerator = () => {
       setShowLoader(true);
       setShowSuccessPopup(true);
       setShowLocationInputs(false);
-      // Update progress to 100 when location is entered
+      setSelectedDiscipline(false)
+      // setShowUserInformation(true);
       setProgress(100);
     } else {
       setShowNotification(true);
@@ -245,74 +267,107 @@ const KeyWordGenerator = () => {
         </div>
       )}
       <h1 className="lg:text-4xl text-3xl  font-bold text-gray-200 mb-4">
-        Choose Business Type
+        Choose Business Discipline
       </h1>
       <select
         className="border border-purple-200 rounded  text-gray-700 font-bold bg-gray-300 px-3 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
-        value={selectedBusinessType}
-        onChange={handleBusinessTypeChange}
+        value={selectedDiscipline}
+        onChange={handleDisciplineChange}
       >
-        <option value="">Select Business Type</option>
-        {businessTypes.map((type, index) => (
+        <option value="">Business Discipline</option>
+        {businessTypes.map((discipline, index) => (
           <option
             key={index}
-            value={type.type}
+            value={discipline.discipline}
             className="text-purple-800 font-semibold"
           >
-            {type.type}
+            {discipline.discipline}
           </option>
         ))}
       </select>
-     {/*  bussnis type selext part */}
-      {selectedBusinessType && !showSelectedServices && (
-        <div>
-          <div className="grid lg:grid-cols-3 grid-cols-2 pt-3 gap-2">
-            {businessTypes
-              .find((type) => type.type === selectedBusinessType)
-              ?.services.map((service, index) => (
-                <label key={index} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="mr-2 w-5 h-5"
-                    value={service}
-                    checked={selectedServices.includes(service)}
-                    onChange={handleServiceCheckboxChange}
-                  />
-                  <span className="text-[#c0ba64] font-semibold text-xl">
-                    {service}
-                  </span>
-                </label>
-              ))}
-          </div>
-          <button
-            className="text-white justify-end flex bg-gradient-to-r from-[#8253ff] to-[#6a98ff] hover:bg-gradient-to-br hover:from-[#6d4bd             hover:to-[#6d4bd6] focus:ring-4 focus:ring-opacity-0 focus:outline-none outline-none border-none shadow-lg hover:shadow-purple-300/40 dark:shadow-lg font-medium rounded-bl-xl rounded-tr-xl text-lg px-5 py-3 text-center items-center my-3"
-            onClick={() => {
-              setShowSelectedServices(true);
-              setName("");
-              setCurrentStep(1);
-            }}
-          >
-            Select Service Types
-            <FaArrowRight className="inline-block ml-2" />
-          </button>
-        </div>
-      )}
 
-      {showSelectedServices && selectedServices.length > 0 && (
+      {selectedDiscipline && (
         <div>
-          <h2 className=" text-3xl  font-bold text-white mt-4">
-            Selected Services
-          </h2>
-          <ul className="list-disc list-inside grid lg:grid-cols-3 grid-cols-2 gap-3">
-            {selectedServices.map((service, index) => (
-              <li
-                key={index}
-                className="text-[#c0ba64] font-semibold text-xl pt-3"
+          <h1 className="lg:text-4xl text-3xl  font-bold text-gray-200 mb-4">
+            Choose Business Type
+          </h1>
+          <select
+            className="border border-purple-200 rounded  text-gray-700 font-bold bg-gray-300 px-3 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
+            value={selectedBusinessType}
+            onChange={handleBusinessTypeChange}
+          >
+            <option value="">Select Business Type</option>
+            {businessTypes
+              .find(
+                (discipline) => discipline.discipline === selectedDiscipline
+              )
+              ?.services.map((service, index) => (
+                <option
+                  key={index}
+                  value={service.type}
+                  className="text-purple-800 font-semibold"
+                >
+                  {service.type}
+                </option>
+              ))}
+          </select>
+
+          {selectedBusinessType && !showSelectedServices && (
+            <div>
+              <div className="grid lg:grid-cols-3 grid-cols-2 pt-3 gap-2">
+                {businessTypes
+                  .find(
+                    (discipline) => discipline.discipline === selectedDiscipline
+                  )
+                  ?.services.find(
+                    (service) => service.type === selectedBusinessType
+                  )
+                  ?.services.map((service, index) => (
+                    <label key={index} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="mr-2 w-5 h-5"
+                        value={service}
+                        checked={selectedServices.includes(service)}
+                        onChange={handleServiceCheckboxChange}
+                      />
+                      <span className="text-[#c0ba64] font-semibold text-xl">
+                        {service}
+                      </span>
+                    </label>
+                  ))}
+              </div>
+              <button
+                className="text-white justify-end flex bg-gradient-to-r from-[#8253ff] to-[#6a98ff]  hover:to-[#6d4bd6] focus:ring-4 focus:ring-opacity-0 focus:outline-none outline-none border-none shadow-lg hover:shadow-purple-300/40 dark:shadow-lg font-medium rounded-bl-xl rounded-tr-xl text-lg px-5 py-3 text-center items-center my-3"
+                onClick={() => {
+                  setShowSelectedServices(true);
+                  setName("");
+                  setCurrentStep(1);
+                }}
               >
-                {service}
-              </li>
-            ))}
-          </ul>
+                Select Service Types
+                <FaArrowRight className="inline-block ml-2" />
+              </button>
+            </div>
+          )}
+
+          {showSelectedServices && selectedServices.length > 0 && (
+            <div>
+              <h2 className=" text-3xl  font-bold text-white mt-4">
+                Selected Services
+              </h2>
+              <ul className="list-disc list-inside grid lg:grid-cols-3 grid-cols-2 gap-3">
+                {selectedServices.map((service, index) => (
+                  <li
+                    key={index}
+                    className="text-[#c0ba64] font-semibold text-xl pt-3"
+                  >
+                    {service}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
@@ -370,18 +425,36 @@ const KeyWordGenerator = () => {
               ))}
             </select>
           </div>
-          <div className="flex w-full max-md:flex-col max-md:gap-1 gap-3">
+          <div className="flex w-full max-md:flex-col max-md:gap-3 gap-5">
             <div className="w-full">
               <h2 className="xl:text-3xl max-xsm:text-[24px]  text-2xl font-serif font-bold text-white my-3">
-                Enter Area You Cover (in KM)
+                Enter Area You Cover ({radius} miles)
               </h2>
-              <input
-                type="text"
-                className="border border-purple-200 rounded bg-gray-300 px-3 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
-                placeholder="Enter the radius you cover in KM"
-                value={radius}
-                onChange={handleRadiusChange}
-              />
+              <div className="relative mb-6">
+               
+                <input
+                  id="labels-range-input"
+                  type="range"
+                  defaultValue={0}
+                  min={0}
+                  max={100}
+                  value={radius}
+                  onChange={handleRadiusChange}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                />
+                <span className="text-sm text-yellow-500 dark:text-yellow-400 absolute start-0 -bottom-6">
+                  0 miles
+                </span>
+                <span className="text-sm text-yellow-500 dark:text-yellow-400 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">
+                  30 miles
+                </span>
+                <span className="text-sm text-yellow-500 dark:text-yellow-400 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">
+                  65 miles
+                </span>
+                <span className="text-sm text-yellow-500 dark:text-yellow-400 absolute end-0 -bottom-6">
+                  100 miles
+                </span>
+              </div>
             </div>
             <span className="w-fit max-md:w-full">
               <h2 className="md:text-3xl text-2xl font-serif font-bold text-white my-3">
@@ -400,8 +473,7 @@ const KeyWordGenerator = () => {
         </>
       )}
 
-
-{/*  show data that user enter */}
+      {/*  show data that user enter */}
       {showLoader ? (
         <div className="flex justify-center mt-7 items-center">
           <div className="loader"></div>
@@ -473,11 +545,11 @@ const KeyWordGenerator = () => {
               </div>
               <p className="text-dark-white mb-2 gap-3 block">
                 <span className="font-bold text-gray-900 text-2xl">
-                  Area that you cover (in KM):
+                  Area that you cover :
                 </span>{" "}
                 <span className="font-semibold text-[#c0ba64]  text-xl">
                   {" "}
-                  {radius}{" "}
+                  {`${radius} miles `}{" "}
                 </span>
               </p>
               <div className=" gap-5">
@@ -553,7 +625,7 @@ const KeyWordGenerator = () => {
           </div>
         </div>
       )}
-       {/*  sucess pop up of keywords generated */}
+      {/*  sucess pop up of keywords generated */}
       {showSuccessPopup && (
         <div className="fixed top-5 lg:-left-3 -left-1 w-full h-fit flex justify-end items-start z-10">
           <div
