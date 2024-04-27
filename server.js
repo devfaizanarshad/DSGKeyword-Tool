@@ -7,8 +7,8 @@ const users = require("./routes/userRoutes");
 const sectorRoutes = require("./routes/sectorRoutes");
 const servicesRoutes = require("./routes/servicesRoutes");
 const customersRoutes = require("./routes/customersRoutes");
-
-const MongoUrl = "mongodb+srv://amirrafay135:XyImBf1YGtzacNcK@blogcluster.drny97g.mongodb.net/DigitalSearch?retryWrites=true&w=majority";
+const connectionString=process.env.CONNECTION_STRING;
+const MongoUrl = connectionString;
 
 const app = express();
 const port = 4000;
