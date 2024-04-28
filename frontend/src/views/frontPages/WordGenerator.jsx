@@ -1,18 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+// import { renderToStaticMarkup } from 'react-dom/server';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
   FaArrowRight,
-  FaCopy,
-  FaDownload,
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { ImHappy } from "react-icons/im";
-import { TbFileDownload } from "react-icons/tb";
 import Button from "./button";
 // import countriesWithStates from "./DummyData/countries";
 import {
@@ -24,7 +21,7 @@ import {
 import "./../../../node_modules/react-country-state-city/dist/react-country-state-city.css";
 
 const KeyWordGenerator = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // Values for Api: selectedSector,selectedBussinessDiscipline, selectedServices,name,email,website,country,state,radius,zipCode
   const [countryid, setCountryid] = useState(0);
   // const [stateid, setstateid] = useState(0);
@@ -101,15 +98,8 @@ const KeyWordGenerator = () => {
     }
   };
 
-
   // states for backend data //
-
-  // states for backend data //
-  const [selectedDiscipline, setSelectedDiscipline] = useState("");
-  // const [selectedBussinessDiscipline, setselectedBussinessDiscipline] = useState("");
-  // const [selectedServices, setSelectedServices] = useState([]);
   const [showSelectedServices, setShowSelectedServices] = useState(false);
-  const [keywordsCSV, setKeywordsCSV] = useState("");
 
   // Add state to manage the notification for invalid input
   const [invalidRadiusInput, setInvalidRadiusInput] = useState(false);
@@ -123,17 +113,6 @@ const KeyWordGenerator = () => {
 
   // Add state to manage whether to show the radio buttons
   const [showLoader, setShowLoader] = useState(false);
-  // const countries = countriesWithStates.map((country) => country.country);
-
-  // // Logic to get states based on the selected country
-  // const getStatesByCountry = (selectedCountry) => {
-  //   const selectedCountryObject = countriesWithStates.find(
-  //     (c) => c.country === selectedCountry
-  //   );
-  //   return selectedCountryObject ? selectedCountryObject.states : [];
-  // };
-
-  // const states = getStatesByCountry(country);
 
   const steps = [
     {},
@@ -189,7 +168,18 @@ const KeyWordGenerator = () => {
         if (
           (currentStep === 2 && !validateEmail(currentStepValue)) ||
           (currentStep === 3 && !validateWebsite(currentStepValue)) ||
+          (currentStep === 4 && !validateWebsite(currentStepValue)) ||
           (currentStep === 6 && isNaN(currentStepValue.trim())) // Check if the value is not a number for radius
+        ) {
+          setShowNotification(true);
+        } else {
+          setCurrentStep(currentStep + 1);
+          setShowNotification(false);
+        }
+
+        if (
+          currentStep === 3 &&
+          !validateWebsite(website)
         ) {
           setShowNotification(true);
         } else {
@@ -205,12 +195,15 @@ const KeyWordGenerator = () => {
   // Function to validate email format
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
+    console.log("Result of Email", re.test(email));
     return re.test(email);
   };
 
   // Function to validate website URL format
   const validateWebsite = (website) => {
-    const re = /^(ftp|http|https):\/\/[^ "]+$/;
+    console.log("Enter in Web");
+    const re = /^(ftp|http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
+    console.log("Result of WEB", re.test(website));
     return re.test(website);
   };
 
@@ -246,7 +239,6 @@ const KeyWordGenerator = () => {
     setCurrentStep(-1);
     setShowInputGrid(false);
     setShowStepMap(true);
-    setKeywordsCSV("");
     setProgress(0);
   };
 
@@ -261,62 +253,6 @@ const KeyWordGenerator = () => {
       setRadius(""); // Clear radius if input is not a number or not within range
       setInvalidRadiusInput(true); // Set state to show notification for invalid input
     }
-  };
-
-  const handleGenerateKeywords = () => {
-    if (country.trim() !== "" && state.trim() !== "" && zipCode.trim() !== "") {
-      // Generate dummy keywords
-      const dummyKeywords = generateDummyKeywords(8); // Generate 8 dummy keywords
-      setKeywordsCSV(dummyKeywords);
-      setShowStepMap(false);
-      setCurrentStep(-1);
-      setShowInputGrid(true);
-      setShowLoader(true);
-      setShowSuccessPopup(true);
-      setShowLocationInputs(false);
-      setSelectedDiscipline(false)
-      // setShowUserInformation(true);
-      setProgress(100);
-    } else {
-      setShowNotification(true);
-    }
-  };
-
-  // Function to generate dummy keywords
-  const generateDummyKeywords = (count) => {
-    const dummyServices = [
-      "Keyword Research",
-      "On-Page Optimization",
-      "Off-Page Optimization",
-      "Link Building",
-      "SEO Audit",
-      "Content Optimization",
-      "Local SEO",
-      "Technical SEO",
-      "SEO Strategy Consulting",
-      "Competitor Analysis",
-    ];
-
-    let dummyKeywords = [];
-    for (let i = 0; i < count; i++) {
-      const randomService =
-        dummyServices[Math.floor(Math.random() * dummyServices.length)];
-      dummyKeywords.push(`${country}` + "   " + `${randomService}`);
-    }
-    return dummyKeywords.join("\n");
-  };
-
-  const handleCopyKeywords = () => {
-    navigator.clipboard.writeText(keywordsCSV);
-  };
-
-  const handleDownloadCSV = () => {
-    const element = document.createElement("a");
-    const file = new Blob([keywordsCSV], { type: "text/csv" });
-    element.href = URL.createObjectURL(file);
-    element.download = "keywords.csv";
-    document.body.appendChild(element); // Required for this to work in Firefox
-    element.click();
   };
 
   const handleServiceCheckboxChange = (event) => {
@@ -337,7 +273,6 @@ const KeyWordGenerator = () => {
       .then((result) => {
         const sectorData = result.data.data;
         setSectors(sectorData);
-        // console.log("Sectors: ",sectorData);
       })
       .catch((error) => {
         console.log(error);
@@ -346,12 +281,12 @@ const KeyWordGenerator = () => {
 
 
   const getBusinessDisciplines = async (e) => {
-    console.log("Name: ", e);
+    // console.log("Name: ", e);
     axios.get(`${process.env.REACT_APP_API_BASE_URL}/sector/listOfBusinessDisciplines/${e}`)
       .then((result) => {
         const sectorData = result.data.data;
         setBussinessDisciplines(sectorData);
-        console.log("Bussiness Disciplines: ", sectorData);
+        // console.log("Bussiness Disciplines: ", sectorData);
       })
       .catch((error) => {
         console.log(error);
@@ -367,7 +302,7 @@ const KeyWordGenerator = () => {
     }).then((result) => {
       const servicesData = result.data.data;
       setServices(servicesData);
-      console.log("Services: ", servicesData);
+      // console.log("Services: ", servicesData);
     })
       .catch((error) => {
         console.log(error);
@@ -375,17 +310,17 @@ const KeyWordGenerator = () => {
   };
 
   const CheckData = async (e) => {
-    // Values for Api: selectedSector,selectedBussinessDiscipline, selectedServices
-    console.log("selectedSector: ", selectedSector)
-    console.log("selectedBussinessDiscipline: ", selectedBussinessDiscipline)
-    console.log("selectedServices: ", selectedServices)
-    console.log("name: ", name)
-    console.log("email: ", email)
-    console.log("website: ", website)
-    console.log("radius: ", radius)
-    console.log("zipCode: ", zipCode)
-    console.log("country: ", country)
-    console.log("state: ", state)
+    // // Values for Api: selectedSector,selectedBussinessDiscipline, selectedServices
+    // console.log("selectedSector: ", selectedSector)
+    // console.log("selectedBussinessDiscipline: ", selectedBussinessDiscipline)
+    // console.log("selectedServices: ", selectedServices)
+    // console.log("name: ", name)
+    // console.log("email: ", email)
+    // console.log("website: ", website)
+    // console.log("radius: ", radius)
+    // console.log("zipCode: ", zipCode)
+    // console.log("country: ", country)
+    // console.log("state: ", state)
   };
 
   // Helper function to create URL-friendly slugs
@@ -486,7 +421,6 @@ const KeyWordGenerator = () => {
       return acc;
     }, []);
 
-    // console.log("Unique Keywords:", uniqueResults);
     setKeywordsArray(uniqueResults);
     console.log("Keywords:", keywordsArray);
 
@@ -514,7 +448,6 @@ const KeyWordGenerator = () => {
           value={selectedSector}
           onChange={(e) => {
             handleSectorChange(e.target.value);
-            // setSelectedBussinessDiscipline(e.target.value); // Update state
             getBusinessDisciplines(e.target.value);
           }}
 
@@ -701,7 +634,6 @@ const KeyWordGenerator = () => {
             </div>
             <div className="flex flex-row space-x-4">
               <Button type="submit" name="Submit" className="inline-flex" onClick={SaveData}>Submit</Button>
-              <Button name="Keyword Generator" onClick={handleGenerateKeywords} className="inline-flex">Generate Keywords</Button>
             </div>
           </>
         )}
@@ -785,41 +717,6 @@ const KeyWordGenerator = () => {
                     {`${radius} miles `}{" "}
                   </span>
                 </p>
-                <div className=" gap-5">
-                  <div className="flex justify-between items-center ">
-                    <h2 className="md:text-3xl text-2xl font-bold text-gray-200 my-5">
-                      Your Keywords:
-                    </h2>
-                    <span title="" className=" flex gap-3">
-                      <FaCopy
-                        size={25}
-                        onClick={handleCopyKeywords}
-                        className="text-white hover:cursor-pointer hover:text-gray-300"
-                        title="Copy"
-                      />
-                      <TbFileDownload
-                        title="Download CSV"
-                        onClick={handleDownloadCSV}
-                        size={30}
-                        className="text-white hover:text-gray-300 hover:cursor-pointer"
-                      />
-                    </span>
-                  </div>
-                  <textarea
-                    className="rounded px-4 py-4 text-lg font-bold text-white bg-[#c0ba64] focus:outline-none focus:ring-2 w-full"
-                    rows="10"
-                    readOnly
-                    value={keywordsCSV}
-                  ></textarea>
-                  <div className="flex justify-between mt-4">
-                    <button
-                      className="bg-[#c0ba64] hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded transition-colors duration-300"
-                      onClick={handleDownloadCSV}
-                    >
-                      Download CSV <FaDownload className="inline-block ml-2" />
-                    </button>
-                  </div>
-                </div>
               </div>
             )}
           </>
@@ -834,8 +731,8 @@ const KeyWordGenerator = () => {
                 ? "Invalid Email format!"
                 : ""}
               {currentStep === 3 && !validateWebsite(website)
-                ? "Field is required!"
-                : ""}
+                ? "Invalid Website format!"
+                : "Field is required!"}
               {currentStep === 4 && !validateWebsite(website)
                 ? "Field is required!"
                 : ""}

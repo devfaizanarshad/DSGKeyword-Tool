@@ -35,7 +35,7 @@ Router.addCustomer = async (req, res) => {
                 });
 
                 await customerData.save();
-                res.json({ status: 200, data: customerData, message: "Customer Added Successfully" });
+                res.json({ status: 200, data: customerData, message: "Information has been submitted to digitalsearchgroup administration." });
             }
         }
         else {

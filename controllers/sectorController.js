@@ -60,8 +60,8 @@ Router.listOfSectorsName = async (req, res) => {
 };
 Router.listOfBusinessDisciplines = async (req, res) => {
     try {
-        const sectorsData = await Sectors.find({ name: req.params.name });
-
+        let sectorName = req.params.name + " ";
+        const sectorsData = await Sectors.find({ name: sectorName });
         // Check if sectorsData is not empty
         if (sectorsData.length > 0) {
             const bussinessDisciplinesNames = sectorsData[0].bussinessDisciplines;
