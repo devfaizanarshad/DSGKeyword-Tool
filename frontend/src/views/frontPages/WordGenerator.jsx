@@ -27,7 +27,7 @@ const KeyWordGenerator = () => {
   // const [stateid, setstateid] = useState(0);
   // states for backend data //
   const [sectors, setSectors] = useState([]);
-  const [selectedSector, setSelectedSector] = useState([]);
+  const [selectedSector, setSelectedSector] = useState("");
 
   const [bussinessDisciplines, setBussinessDisciplines] = useState([]);
   const [selectedBussinessDiscipline, setSelectedBussinessDiscipline] = useState("");
@@ -213,14 +213,19 @@ const KeyWordGenerator = () => {
     setShowLocationInputs(true);
   };
 
+  // const handleSectorChange = (value) => {
+  //   console.log("handleSectorChange", handleSectorChange);
+  //   const sector = value;
+  //   setShowSelectedServices(false);
+  //   setShowLocationInputs(false);
+  //   setShowInputGrid(false);
+  //   setSelectedBussinessDiscipline(false);
+  //   setSelectedSector(sector);
+  // };
+
   const handleSectorChange = (value) => {
-    console.log("handleSectorChange", handleSectorChange);
-    const sector = value;
-    setShowSelectedServices(false);
-    setShowLocationInputs(false);
-    setShowInputGrid(false);
-    setSelectedBussinessDiscipline(false);
-    setSelectedSector(sector);
+    console.log("handleSectorChange", value);
+    setSelectedSector(value); // Set to the provided value (should be a string)
   };
 
   const handleBusinessDisciplineChange = (value) => {
