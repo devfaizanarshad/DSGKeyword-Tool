@@ -1,6 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 const Sectors = require('../models/Sectors');
+const Services = require('../models/Services');
 
 Router.addSector = async (req, res) => {
     try {
@@ -21,7 +22,7 @@ Router.addSector = async (req, res) => {
                 } else {
                     tagsBussinessDisciplines = [bussinessDisciplines];
                 }
-                
+
                 const sectorData = new Sectors({
                     name: name,
                     bussinessDisciplines: tagsBussinessDisciplines
@@ -62,6 +63,7 @@ Router.listOfBusinessDisciplines = async (req, res) => {
     try {
         let sectorName = req.params.name + " ";
         const sectorsData = await Sectors.find({ name: sectorName });
+        console.log("Backend sectorsData: ", sectorsData);
         // Check if sectorsData is not empty
         if (sectorsData.length > 0) {
             const bussinessDisciplinesNames = sectorsData[0].bussinessDisciplines;
@@ -117,6 +119,20 @@ Router.deleteSector = async (req, res) => {
         const checkSector = await Sectors.findById(req.params.id);
         if (checkSector) {
             await Sectors.findByIdAndRemove(req.params.id);
+
+            const checkServices = await Services.find({ sectorName: checkSector.name });
+
+            console.log("checkServices: ", checkServices);
+
+            if (checkServices) {
+                const deleteServices = await Services.findByIdAndRemove(checkServices._id);
+
+                console.log("deleteServices: ", deleteServices);
+
+                res.json({ status: 200, message: 'Sector deleted Successfully' });
+            } else {
+                res.json({ status: 400, message: 'Sector not found' });
+            }
             res.json({ status: 200, message: 'Sector deleted Successfully' });
         } else {
             res.json({ status: 400, message: 'Sector not found' });

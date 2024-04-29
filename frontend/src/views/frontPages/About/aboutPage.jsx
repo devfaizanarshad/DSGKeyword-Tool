@@ -115,7 +115,7 @@ const AboutPage = () => {
             <img src={emojy} alt="emoji of happy SEO" width={150} height={150} />
           </motion.div>
 
-          <div className="absolute max-lg:relative max-md:w-full w-[610px]  right-1 -bottom-44 bg-gradient-to-br pt-16 from-[#d8ffef] via-[#7ddab3] to-transparent  p-16 space-y-5 rounded-lg shadow-lg transform -translate-y-full">
+          <div className="absolute max-lg:relative max-md:w-full w-[610px] right-1 -bottom-44 bg-gradient-to-br pt-16 from-[#d8ffef] via-[#7ddab3] to-transparent  p-16 space-y-5 rounded-lg shadow-lg transform -translate-y-full">
             <h3 className="font-serif italic text-2xl font-bold">tem-purpose</h3>
             <p className="text-lg italic">
               We aim to constantly improve the user experience, functionality, and
@@ -129,37 +129,37 @@ const AboutPage = () => {
         </section>
         {/* team profile section */}
         <section className="w-full  flex items-center justify-center flex-col mb-4  space-y-6 lg:pt-32  pb-32  ">
-          <h1 className="text-7xl text-center text-gray-600 max-md:text-4xl lg:w-1/3 font-extrabold ">
+          {/* <h1 className="text-7xl text-center text-gray-600 max-md:text-4xl lg:w-1/3 font-extrabold ">
             Meet our team of expert
           </h1>
           <p className="text-xl text-gray-400 max-md:w-1/2 ">
             We&apos;re a 100% remote team spread all across the world!
-          </p>
+          </p> */}
 
           <span className="grid lg:grid-cols-4 grid-cols-2 max-md:grid-cols-1  gap-8 pt-10">
-            <span className="flex justify-center flex-col  items-center">
-              <div className="bg-yellow-200 pt-4  overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[325px] h-[320px]">
+            <span className="flex justify-center flex-col items-center">
+              <div className="bg-yellow-200 pt-4 overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[300px] h-[300px]">
                 <img src={lili} alt="" />
               </div>
-              <h3 className="text-lg font-bold  mt-5"> Danny Russell </h3>
+              <h3 className="text-lg font-bold mt-5"> Danny Russell </h3>
               <h4 className="font-medium text-gray-500">Founder & CEO</h4>
             </span>
             <span className="flex justify-center flex-col  items-center">
-              <div className="bg-blue-200 overflow-hidden pt-4 rounded-l-[50%] rounded-br-[55%] w-[325px] h-[320px]">
+              <div className="bg-blue-200 overflow-hidden pt-4 rounded-l-[50%] rounded-br-[55%] w-[300px] h-[300px]">
                 <img src={joan} alt="" />
               </div>
               <h3 className="text-lg font-bold  mt-5"> Ezekiel Pearce </h3>
               <h4 className="font-medium text-gray-500">Founder & CEO</h4>
             </span>
             <span className="flex justify-center flex-col  items-center">
-              <div className="bg-pink-200 pt-4  overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[325px] h-[320px]">
+              <div className="bg-pink-200 pt-4  overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[300px] h-[300px]">
                 <img src={jon} alt="" />
               </div>
               <h3 className="text-lg font-bold  mt-5"> Byron Conner </h3>
               <h4 className="font-medium text-gray-500">Founder & CEO</h4>
             </span>
             <span className="flex justify-center flex-col  items-center">
-              <div className="bg-green-200 pt-4  overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[325px] h-[320px]">
+              <div className="bg-green-200 pt-4  overflow-hidden rounded-l-[50%] rounded-br-[55%] w-[300px] h-[300px]">
                 <img src={ana} alt="" />
               </div>
               <h3 className="text-lg font-bold  mt-5"> Anna Lin </h3>

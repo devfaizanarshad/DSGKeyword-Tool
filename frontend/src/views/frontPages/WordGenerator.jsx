@@ -281,12 +281,12 @@ const KeyWordGenerator = () => {
 
 
   const getBusinessDisciplines = async (e) => {
-    // console.log("Name: ", e);
+    console.log("Frontend sector Name for Discipline: ", e);
     axios.get(`${process.env.REACT_APP_API_BASE_URL}/sector/listOfBusinessDisciplines/${e}`)
       .then((result) => {
         const sectorData = result.data.data;
         setBussinessDisciplines(sectorData);
-        // console.log("Bussiness Disciplines: ", sectorData);
+        console.log("Frontend Bussiness Disciplines: ", sectorData);
       })
       .catch((error) => {
         console.log(error);
