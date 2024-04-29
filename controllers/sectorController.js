@@ -63,10 +63,16 @@ Router.listOfBusinessDisciplines = async (req, res) => {
     try {
         let sectorName = req.params.name + " ";
         const sectorsData = await Sectors.find({ name: sectorName });
-        console.log("Backend sectorsData: ", sectorsData);
+        const sectorsData2 = await Sectors.find({ name: req.params.name });
+        console.log("Backend sectorsData with space: ", sectorsData);
+        console.log("Backend sectorsData without space: ", sectorsData2);
+
         // Check if sectorsData is not empty
         if (sectorsData.length > 0) {
             const bussinessDisciplinesNames = sectorsData[0].bussinessDisciplines;
+            res.json({ status: 200, data: bussinessDisciplinesNames }); // Send names array in response data
+        } else if (sectorsData2.length > 0) {
+            const bussinessDisciplinesNames = sectorsData2[0].bussinessDisciplines;
             res.json({ status: 200, data: bussinessDisciplinesNames }); // Send names array in response data
         } else {
             res.json({ status: 404, error: 'Sector not found' });

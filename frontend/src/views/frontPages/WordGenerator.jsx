@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import React from 'react';
-// import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
   FaArrowRight,
@@ -21,7 +21,7 @@ import {
 import "./../../../node_modules/react-country-state-city/dist/react-country-state-city.css";
 
 const KeyWordGenerator = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // Values for Api: selectedSector,selectedBussinessDiscipline, selectedServices,name,email,website,country,state,radius,zipCode
   const [countryid, setCountryid] = useState(0);
   // const [stateid, setstateid] = useState(0);
