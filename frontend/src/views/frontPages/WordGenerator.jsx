@@ -214,6 +214,7 @@ const KeyWordGenerator = () => {
   };
 
   const handleSectorChange = (value) => {
+    console.log("handleSectorChange", handleSectorChange);
     const sector = value;
     setShowSelectedServices(false);
     setShowLocationInputs(false);
@@ -447,8 +448,9 @@ const KeyWordGenerator = () => {
           className="border border-purple-200 rounded text-gray-700 font-bold bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
           value={selectedSector}
           onChange={(e) => {
-            handleSectorChange(e.target.value);
+            console.log("e.target.value: ", e);
             getBusinessDisciplines(e.target.value);
+            handleSectorChange(e.target.value);
           }}
 
         >
