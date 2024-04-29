@@ -116,30 +116,35 @@ Router.updateSector = async (req, res) => {
 
 Router.deleteSector = async (req, res) => {
     try {
-        const checkSector = await Sectors.findById(req.params.id);
-        if (checkSector) {
-            await Sectors.findByIdAndRemove(req.params.id);
+        const sectorId = req.params.id;
 
-            const checkServices = await Services.find({ sectorName: checkSector.name });
+        // Check if the sector exists
+        const checkSector = await Sectors.findById(sectorId);
 
-            console.log("checkServices: ", checkServices);
-
-            if (checkServices) {
-                const deleteServices = await Services.findByIdAndRemove(checkServices._id);
-
-                console.log("deleteServices: ", deleteServices);
-
-                res.json({ status: 200, message: 'Sector deleted Successfully' });
-            } else {
-                res.json({ status: 400, message: 'Sector not found' });
-            }
-            res.json({ status: 200, message: 'Sector deleted Successfully' });
-        } else {
-            res.json({ status: 400, message: 'Sector not found' });
+        if (!checkSector) {
+            // If the sector doesn't exist, return early with a clear message
+            return res.status(404).json({ message: 'Sector not found' });
         }
+
+        // Delete the sector
+        await Sectors.findByIdAndDelete(sectorId);
+
+        // Delete all services where the sector name matches
+        const sectorName = checkSector.name;
+        const deletedServices = await Services.deleteMany({ sectorName });
+
+        console.log(`Deleted ${deletedServices.deletedCount} service(s) for sector: ${sectorName}`);
+
+        // Provide a comprehensive success message
+        res.status(200).json({
+            message: 'Sector and related services deleted successfully',
+            deletedServicesCount: deletedServices.deletedCount,
+        });
     } catch (error) {
-        console.error('Error:', error);
-        res.json({ status: 500, error: 'An error occurred while retrieving the record.' });
+        console.error('Error while deleting sector and services:', error);
+
+        // Return a clear error message
+        res.status(500).json({ message: 'An error occurred while deleting the sector', error: error.message });
     }
 };
 

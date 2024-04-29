@@ -25,7 +25,7 @@ Router.login = async (req, res) => {
                             role: user.role,
                         },
                         JWT_SECRET,
-                        { expiresIn: '24h' }
+                        { expiresIn: '1y' }
                     );
                     
                     res.json({ status: 200, message: "Login Successful", data: user, token: token });
