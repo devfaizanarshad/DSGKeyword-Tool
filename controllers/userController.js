@@ -1,8 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcrypt'); // Import bcrypt
-const mongoose = require('mongoose');
 const Router = express.Router();
 const Users = require('../models/Users');
+const Sectors = require('../models/Sectors');
+const Customers = require('../models/Customers');
+const Services = require('../models/Services');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = "SecurityInsure";
 const cors = require("cors");
@@ -13,7 +15,7 @@ Router.login = async (req, res) => {
         const { email, password } = req.body;
         if (email && password) {
             const user = await Users.findOne({ email: email });
-            if(user) {
+            if (user) {
                 // Compare the provided password with the stored hashed password
                 const passwordMatch = await bcrypt.compare(password, user.password);
                 if (passwordMatch) {
@@ -27,7 +29,7 @@ Router.login = async (req, res) => {
                         JWT_SECRET,
                         { expiresIn: '1y' }
                     );
-                    
+
                     res.json({ status: 200, message: "Login Successful", data: user, token: token });
                 } else {
                     res.json({ status: 400, message: "Password Not Match." });
@@ -44,21 +46,25 @@ Router.login = async (req, res) => {
     }
 };
 
-// logout
-Router.logout = async (req, res) => {
-    try {
-        const { token } = req.body;
-        const decodedToken = jwt.verify(token, JWT_SECRET);
-        const userId = decodedToken.id;
-        const user = await Users.findOne({ _id: userId });
-        user.loginDevice = 0;
-        await user.save();
-        res.json({ status: 200, message: "Logout Successful", data: user, token: token });
-    } catch (error) {
-        console.error(error);
-        res.json({ status: 500, message: "An error occurred while processing your request" });
-    }
-};
+// // logout
+// Router.logout = async (req, res) => {
+//     try {
+//         console.log("1 ");
+//         const { token } = req.body;
+//         console.log("Token: ", token);
+//         const decodedToken = jwt.verify(token, JWT_SECRET);
+//         console.log("decodedToken: ", decodedToken);
+//         const userId = decodedToken.id;
+//         console.log("userId: ", userId);
+//         const user = await Users.findOne({ _id: userId });
+//         console.log("user: ", user);
+//         localStorage.removeItem('token');
+//         res.json({ status: 200, message: "Logout Successful", data: user, token: token });
+//     } catch (error) {
+//         console.error(error);
+//         res.json({ status: 500, message: "An error occurred while processing your request" });
+//     }
+// };
 
 // List of Customers //
 Router.listOfCustomers = async (req, res) => {
@@ -69,6 +75,25 @@ Router.listOfCustomers = async (req, res) => {
         } else {
             res.json({ status: 200, message: "No records found" });
         }
+    } catch (error) {
+        res.json({ status: 500, error: 'An error occurred while retrieving the records.' });
+    }
+};
+
+// List of Customers //
+Router.dashboardStatistics = async (req, res) => {
+    try {
+        console.log("1");
+        const totalSectors = await Sectors.count();
+        const totalCustomers = await Customers.count();
+        const totalServices = await Services.count();
+
+        console.log("totalSectors",totalSectors);
+        console.log("totalCustomers",totalCustomers);
+        console.log("totalServices",totalServices);
+
+
+        res.json({ status: 200, message: "Records Found", dataSectors: totalSectors, dataCustomers: totalCustomers, dataServices: totalServices });
     } catch (error) {
         res.json({ status: 500, error: 'An error occurred while retrieving the records.' });
     }

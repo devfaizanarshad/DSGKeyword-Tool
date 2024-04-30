@@ -95,20 +95,6 @@ const KeywordsList = () => {
         });
     };
 
-    // const handleDownloadCSV = () => {
-    //     const csvData = filteredCustomer.map((item, index) => ({
-    //         Sr: index + 1,
-    //         Name: customerName,
-    //         Email: customerEmail,
-    //         Keyword: item.keyword,
-    //         Link: item.link,
-    //     }));
-
-    //     const csvString = Papa.unparse(csvData);
-    //     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    //     saveAs(blob, 'keywords.csv'); // Download the CSV file
-    // };
-
     const handleDownloadCSV = () => {
         // Header row with common data
         // const commonData = [{ Name: customerName, Email: customerEmail }];
@@ -147,7 +133,7 @@ const KeywordsList = () => {
                             <div className="col-md-12 d-flex justify-content-between align-items-center">
                                 <h1 className="text-xl font-bold text-indigo-700">Keywords List</h1>
                                 <button
-                                className="text-center text-white rounded-full w-44 h-7 bg-[#4B0082] font-bold"
+                                className="mx-3 text-center text-white rounded-full w-44 h-7 bg-[#4B0082] font-bold"
                                     onClick={handleDownloadCSV}
                                 >
                                     Download CSV <FontAwesomeIcon icon={faDownload} />
