@@ -12,16 +12,13 @@ import {
     CCol,
     CContainer,
     CForm,
-    CFormInput,
     CInputGroup,
-    CInputGroupText,
     CRow
 } from '@coreui/react';
 
 const UpdateService = () => {
     const { id } = useParams();
     const [sectorName, setSectorName] = useState("");
-    // const [bussinessDisciplines, setBussinessDisciplines] = useState([]);
     const [selectedBussinessDiscipline, setselectedBussinessDiscipline] = useState("");
     const [services, setServices] = useState([]);
 

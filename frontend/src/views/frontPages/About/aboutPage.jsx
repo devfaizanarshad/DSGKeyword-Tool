@@ -56,7 +56,7 @@ const AboutPage = () => {
               <span className="flex justify-between max-lg:flex-col max-lg:px-14 max-sm:px-4  gap-12 items-center">
                 <img
                   src={AboutImag}
-                  alt="About Image"
+                  alt="About Us"
                   width={800}
                   height={800}
                   className="rounded-tr-xl max-lg:rounded-xl"

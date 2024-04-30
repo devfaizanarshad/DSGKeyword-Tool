@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -12,13 +11,8 @@ import {
   CCol,
   CContainer,
   CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilEnvelopeOpen, cilEyedropper } from '@coreui/icons'
 
 const Login = () => {
   const [email, setEmail] = useState('')

@@ -59,6 +59,7 @@ Router.listOfSectorsName = async (req, res) => {
         res.json({ status: 500, error: 'An error occurred while retrieving the records.' });
     }
 };
+
 Router.listOfBusinessDisciplines = async (req, res) => {
     try {
         let sectorName = req.params.name + " ";

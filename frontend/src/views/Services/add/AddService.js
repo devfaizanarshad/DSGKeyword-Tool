@@ -12,9 +12,7 @@ import {
     CCol,
     CContainer,
     CForm,
-    CFormInput,
     CInputGroup,
-    CInputGroupText,
     CRow
 } from '@coreui/react';
 

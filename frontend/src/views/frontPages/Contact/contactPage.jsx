@@ -1,32 +1,9 @@
 /* eslint-disable prettier/prettier */
 import Navbar from "../Navbar";
 import React from 'react';
-import { useState } from "react";
+// import { useState } from "react";
 
 const ContactForm = () => {
-  const [copyMessage, setCopyMessage] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Your form submission logic here
-    // For demonstration purposes, we're just logging the form data
-    const formData = new FormData(e.target);
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
-    // Logic to handle sending a copy of the message
-    if (copyMessage) {
-      console.log('Send me a copy of this message');
-      // You can add your logic to send a copy of the message here
-    }
-  };
-
-  const handleCheckboxChange = () => {
-    setCopyMessage(!copyMessage);
-  };
-
-
   return (
     <div>
       <Navbar />
@@ -254,6 +231,7 @@ const ContactForm = () => {
           <div className="block w-full shrink-0 grow-0 basis-auto lg:flex  xl:w-full px-10">
             <div className="h-[500px] w-full">
               <iframe
+                title="Map"
                 src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed"
                 className="left-0 top-0 h-full w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg"
                 allowfullscreen

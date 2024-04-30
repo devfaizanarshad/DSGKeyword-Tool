@@ -1,17 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
-  FaArrowRight,
-  FaExclamationTriangle,
+  FaArrowRight
 } from "react-icons/fa";
-import { ImHappy } from "react-icons/im";
 import Button from "./button";
-// import countriesWithStates from "./DummyData/countries";
 import {
   // CitySelect,
   CountrySelect,
@@ -21,7 +16,6 @@ import {
 import "./../../../node_modules/react-country-state-city/dist/react-country-state-city.css";
 
 const KeyWordGenerator = () => {
-  const navigate = useNavigate();
   // Values for Api: selectedSector,selectedBussinessDiscipline, selectedServices,name,email,website,country,state,radius,zipCode
   const [countryid, setCountryid] = useState(0);
   // const [stateid, setstateid] = useState(0);
@@ -44,11 +38,23 @@ const KeyWordGenerator = () => {
   const [radius, setRadius] = useState("");
   const [keywordsArray, setKeywordsArray] = useState([]);
 
-
-  // SaveData
-
+  // SaveData Api Call
   const SaveData = async (e) => {
     e.preventDefault();
+
+    if (website) {
+      const websitePattern = /^(ftp|http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
+      const isValid = websitePattern.test(website); // Validate website
+      console.log("isValid: ", isValid);
+      if (!isValid) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: "Website URL Pattern Must be correct",
+        });
+        return;
+      }
+    }
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/addCustomer`, {
@@ -73,7 +79,6 @@ const KeyWordGenerator = () => {
         });
 
         window.location.href = "/";
-        // navigate('/');
       } else {
         Swal.fire({
           icon: 'error',
@@ -86,7 +91,6 @@ const KeyWordGenerator = () => {
           response.data.message === 'This sector already exists'
         ) {
           window.location.href = "/";
-          // navigate('/sector/list');
         }
       }
     } catch (error) {
@@ -107,12 +111,8 @@ const KeyWordGenerator = () => {
   const [progress, setProgress] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [showInputGrid, setShowInputGrid] = useState(false);
   const [showStepMap, setShowStepMap] = useState(true);
   const [showLocationInputs, setShowLocationInputs] = useState(false); // Added state for showing location inputs
-
-  // Add state to manage whether to show the radio buttons
-  const [showLoader, setShowLoader] = useState(false);
 
   const steps = [
     {},
@@ -126,7 +126,6 @@ const KeyWordGenerator = () => {
       setShowSuccessPopup(false);
       setShowNotification(false);
       setInvalidRadiusInput(false);
-      setShowLoader(false);
     }, 1500);
 
     return () => clearTimeout(timeout); // Cleanup function to clear the timeout on component unmount
@@ -148,63 +147,111 @@ const KeyWordGenerator = () => {
     }
   }, [name, email, website, country, state, zipCode, radius, currentStep]);
 
+  ////////////// Correct Code ////////////////////
+
+  // Function to validate email format and return a Boolean
+  // const validateEmail = (email) => {
+  //   const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+  //   const isValid = emailPattern.test(email);
+
+  //   return isValid;
+  // };
+
+  // // Function to handle navigation between steps
+  // const handleNextStep = () => {
+  //   let isValid = true;
+
+  //   // Ensure previous steps are filled
+  //   for (let i = 1; i < currentStep; i++) {
+  //     if (steps[i].value.trim() === "") {
+  //       isValid = false;
+  //       break;
+  //     }
+  //   }
+
+  //   if (isValid) {
+  //     const currentStepValue = steps[currentStep].value;
+
+  //     if (currentStepValue.trim() === "") {
+  //       setShowNotification(true);
+  //     } else {
+  //       // Additional validation
+  //       let emailValid = true;
+
+  //       if (currentStep === 2) {
+  //         emailValid = validateEmail(currentStepValue);
+
+  //         if (!emailValid) {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'Error',
+  //             text: 'Invalid email format',
+  //           });
+  //           return;
+  //         }
+  //       }
+
+  //       if (emailValid) {
+  //         setShowNotification(false);
+  //         setCurrentStep(currentStep + 1); // Move to next step
+  //       } else {
+  //         setShowNotification(true);
+  //       }
+  //     }
+  //   } else {
+  //     setShowNotification(true);
+  //   }
+  // };
+
+  ////////////// Correct Code End ////////////////////
+
+  // Function to validate email format and return a Boolean
+  const validateEmail = (email) => {
+    const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    const isValid = emailPattern.test(email);
+    return isValid;
+  };
+
   const handleNextStep = () => {
+    console.log("handleNextStep called with currentStep:", currentStep);
+
     let isValid = true;
 
-    // Check if any of the previous steps are empty
-    for (let i = 1; i < currentStep; i++) {
+    // Ensure previous steps are filled
+    for (let i = 1; i <= currentStep; i++) {
       if (steps[i].value.trim() === "") {
         isValid = false;
+        console.log("Previous step is empty, breaking loop");
         break;
       }
     }
-    // validation of input feilds
+
     if (isValid) {
       const currentStepValue = steps[currentStep].value;
+
       if (currentStepValue.trim() === "") {
         setShowNotification(true);
-      } else {
-        // Additional validation for email and website fields
-        if (
-          (currentStep === 2 && !validateEmail(currentStepValue)) ||
-          (currentStep === 3 && !validateWebsite(currentStepValue)) ||
-          (currentStep === 4 && !validateWebsite(currentStepValue)) ||
-          (currentStep === 6 && isNaN(currentStepValue.trim())) // Check if the value is not a number for radius
-        ) {
-          setShowNotification(true);
-        } else {
-          setCurrentStep(currentStep + 1);
-          setShowNotification(false);
-        }
+        return; // Exit early to avoid incrementing step
+      }
 
-        if (
-          currentStep === 3 &&
-          !validateWebsite(website)
-        ) {
-          setShowNotification(true);
-        } else {
-          setCurrentStep(currentStep + 1);
-          setShowNotification(false);
+      // Validate email if current step is 2
+      if (currentStep === 2) {
+        if (!validateEmail(currentStepValue)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Invalid email format',
+          });
+          return; // Exit early to avoid incrementing step
         }
       }
+
+      // If all validations pass, increment the current step
+      setCurrentStep(currentStep + 1); // Move to the next step
+      setShowNotification(false); // Hide the notification
     } else {
       setShowNotification(true);
     }
-  };
-
-  // Function to validate email format
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    console.log("Result of Email", re.test(email));
-    return re.test(email);
-  };
-
-  // Function to validate website URL format
-  const validateWebsite = (website) => {
-    console.log("Enter in Web");
-    const re = /^(ftp|http|https):\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
-    console.log("Result of WEB", re.test(website));
-    return re.test(website);
   };
 
   // Function to handle location input and show location options
@@ -218,13 +265,11 @@ const KeyWordGenerator = () => {
   //   const sector = value;
   //   setShowSelectedServices(false);
   //   setShowLocationInputs(false);
-  //   setShowInputGrid(false);
   //   setSelectedBussinessDiscipline(false);
   //   setSelectedSector(sector);
   // };
 
   const handleSectorChange = (value) => {
-    console.log("handleSectorChange", value);
     setSelectedSector(value); // Set to the provided value (should be a string)
   };
 
@@ -243,7 +288,6 @@ const KeyWordGenerator = () => {
     setZipCode("");
     setRadius("");
     setCurrentStep(-1);
-    setShowInputGrid(false);
     setShowStepMap(true);
     setProgress(0);
   };
@@ -287,12 +331,10 @@ const KeyWordGenerator = () => {
 
 
   const getBusinessDisciplines = async (e) => {
-    console.log("Frontend sector Name for Discipline: ", e);
     axios.get(`${process.env.REACT_APP_API_BASE_URL}/sector/listOfBusinessDisciplines/${e}`)
       .then((result) => {
         const sectorData = result.data.data;
         setBussinessDisciplines(sectorData);
-        console.log("Frontend Bussiness Disciplines: ", sectorData);
       })
       .catch((error) => {
         console.log(error);
@@ -308,7 +350,6 @@ const KeyWordGenerator = () => {
     }).then((result) => {
       const servicesData = result.data.data;
       setServices(servicesData);
-      // console.log("Services: ", servicesData);
     })
       .catch((error) => {
         console.log(error);
@@ -329,109 +370,76 @@ const KeyWordGenerator = () => {
     // console.log("state: ", state)
   };
 
-  // Helper function to create URL-friendly slugs
-  const createSlug = (text) => {
-    return text.toLowerCase().replace(/\s+/g, '-');
-  };
+  useEffect(() => {
+    if (state) {
+      getKeywords(selectedServices, country, state);
+    }
+  }, [selectedServices,country,state]); // Triggered on state change
 
   const getKeywords = async (selectedServices, country, state) => {
     const results = [];
 
+    console.log("country: ", country);
+    console.log("state: ", state);
+
     if (!Array.isArray(selectedServices) || selectedServices.length === 0) {
-      console.warn("selectedServices parameter is undefined or empty.");
-      return results; // Return early if no valid 'selectedServices' array
+      console.warn("Selected services parameter is undefined or empty.");
+      return results;
     }
 
-    // Function to generate an HTML link
+    const createSlug = (text) => {
+      return text.trim().toLowerCase().replace(/\s+/g, '-');
+    };
+
     const generateLink = (text, location) => {
       return `<li><a href="/${createSlug(text)}/" title="${text}">${location}</a></li>`;
     };
 
-    // Generate all combinations of keywords and their HTML links
     selectedServices.forEach((service) => {
-      const fullKeyword1 = `${country} ${service}`;
-      const fullKeyword2 = `${service} ${country}`;
-      const fullKeyword3 = `${service} in ${country}`;
-      const fullKeyword4 = `${state} ${service}`;
-      const fullKeyword5 = `${service} ${state}`;
-      const fullKeyword6 = `${service} in ${state}`;
+      if (country) {
+        results.push({
+          keyword: `${country} ${service}`,
+          location: country,
+          link: generateLink(`${country} ${service}`, country),
+        });
 
-      results.push({
-        keyword: fullKeyword1,
-        location: country,
-        link: generateLink(fullKeyword1, country),
-      });
+        results.push({
+          keyword: `${service} ${country}`,
+          location: country,
+          link: generateLink(`${service} ${country}`, country),
+        });
 
-      results.push({
-        keyword: fullKeyword2,
-        location: country,
-        link: generateLink(fullKeyword2, country),
-      });
-
-      results.push({
-        keyword: fullKeyword3,
-        location: country,
-        link: generateLink(fullKeyword3, country),
-      });
-
-      results.push({
-        keyword: fullKeyword4,
-        location: state,
-        link: generateLink(fullKeyword4, state),
-      });
-
-      results.push({
-        keyword: fullKeyword5,
-        location: state,
-        link: generateLink(fullKeyword5, state),
-      });
-
-      results.push({
-        keyword: fullKeyword6,
-        location: state,
-        link: generateLink(fullKeyword6, state),
-      });
-    });
-
-    // Add links for country and state individually
-    results.push({
-      keyword: country,
-      location: country,
-      link: generateLink(country, country),
-    });
-
-    results.push({
-      keyword: `in ${country}`,
-      location: country,
-      link: generateLink(`in ${country}`, country),
-    });
-
-    results.push({
-      keyword: state,
-      location: state,
-      link: generateLink(state, state),
-    });
-
-    results.push({
-      keyword: `in ${state}`,
-      location: state,
-      link: generateLink(`in ${state}`, state),
-    });
-
-    // Remove duplicates based on the keyword
-    const uniqueResults = results.reduce((acc, current) => {
-      const exists = acc.find((item) => item.keyword === current.keyword);
-      if (!exists) {
-        acc.push(current);
+        results.push({
+          keyword: `${service} in ${country}`,
+          location: country,
+          link: generateLink(`${service} in ${country}`, country),
+        });
       }
-      return acc;
-    }, []);
 
-    setKeywordsArray(uniqueResults);
-    console.log("Keywords:", keywordsArray);
+      if (state) {
+        results.push({
+          keyword: `${state} ${service}`,
+          location: state,
+          link: generateLink(`${state} ${service}`, state),
+        });
 
-    return uniqueResults;
-  }
+        results.push({
+          keyword: `${service} ${state}`,
+          location: state,
+          link: generateLink(`${service} ${state}`, state),
+        });
+
+        results.push({
+          keyword: `${service} in ${state}`,
+          location: state,
+          link: generateLink(`${service} in ${state}`, state),
+        });
+      }
+    });
+
+    setKeywordsArray(results);
+    return results;
+  };
 
   return (
     <>
@@ -453,7 +461,6 @@ const KeyWordGenerator = () => {
           className="border border-purple-200 rounded text-gray-700 font-bold bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full mb-4 text-xl"
           value={selectedSector}
           onChange={(e) => {
-            console.log("e.target.value: ", e);
             getBusinessDisciplines(e.target.value);
             handleSectorChange(e.target.value);
           }}
@@ -481,7 +488,6 @@ const KeyWordGenerator = () => {
               value={selectedBussinessDiscipline}
               onChange={(e) => {
                 handleBusinessDisciplineChange(e.target.value);
-                // setSelectedBussinessDiscipline(e.target.value); // Update state
                 getServices(e.target.value);
               }}
             >
@@ -591,9 +597,9 @@ const KeyWordGenerator = () => {
               <StateSelect
                 className="rounded text-gray-700 font-bold bg-white px-3 py-2 w-full mb-4 text-xl"
                 countryid={countryid}
-                onChange={(e) => { setState(e.name); CheckData(); getKeywords(selectedServices, country, state); }}
-                placeHolder="Select State"
                 value={state}
+                placeHolder="Select State"
+                onChange={(e) => { setState(e.name); CheckData(); }}
               />
             </div>
             <div className="flex w-full max-md:flex-col max-md:gap-3 gap-5">
@@ -605,7 +611,6 @@ const KeyWordGenerator = () => {
                   <input
                     id="labels-range-input"
                     type="range"
-                    defaultValue={0}
                     min={0}
                     max={100}
                     value={radius}
@@ -643,139 +648,6 @@ const KeyWordGenerator = () => {
               <Button type="submit" name="Submit" className="inline-flex" onClick={SaveData}>Submit</Button>
             </div>
           </>
-        )}
-
-        {/*  show data that user enter */}
-        {showLoader ? (
-          <div className="flex justify-center mt-7 items-center">
-            <div className="loader"></div>
-          </div>
-        ) : (
-          <>
-            {showInputGrid && (
-              <div className="mt-4 bg-dark-purple rounded  ">
-                <h2 className="lg:text-4xl text-2xl font-bold text-gray-200 mb-3">
-                  User Information
-                </h2>
-                <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-3">
-                  <p className="mb-2">
-                    <span className="font-bold text-[#c0ba64] text-2xl">
-                      Name:
-                    </span>{" "}
-                    <span className="font-bold text-white text-xl">
-                      {" "}
-                      {name}{" "}
-                    </span>
-                  </p>
-                  <p className=" mb-2">
-                    <span className="font-bold text-[#c0ba64] text-2xl">
-                      Email:
-                    </span>{" "}
-                    <span className="font-bold text-white text-xl">
-                      {" "}
-                      {email}{" "}
-                    </span>
-                  </p>
-                  {website.length > 0 && (
-                    <p className="mb-2 gap-3">
-                      <span className="font-bold text-[#c0ba64] text-2xl">
-                        Website:
-                      </span>{" "}
-                      <span className="font-bold text-white text-xl">
-                        {website}
-                      </span>
-                    </p>
-                  )}
-
-                  <p className="text-dark-white mb-2 block gap-3">
-                    <span className="font-bold text-[#c0ba64] text-2xl">
-                      Country:
-                    </span>{" "}
-                    <span className="font-bold text-white text-xl">
-                      {" "}
-                      {country}{" "}
-                    </span>
-                  </p>
-                  <p className="text-dark-white mb-2 block gap-3">
-                    <span className="font-bold text-[#c0ba64] text-2xl">
-                      State:
-                    </span>{" "}
-                    <span className="font-bold text-white text-xl">
-                      {" "}
-                      {state}{" "}
-                    </span>
-                  </p>
-                  <p className="text-dark-white mb-2 block gap-3">
-                    <span className="font-bold text-[#c0ba64] text-2xl">
-                      Zip Code:
-                    </span>{" "}
-                    <span className="font-bold text-white text-xl">
-                      {" "}
-                      {zipCode}{" "}
-                    </span>
-                  </p>
-                </div>
-                <p className="text-dark-white mb-2 gap-3 block mt-3">
-                  <span className="font-bold text-[#c0ba64] text-2xl">
-                    Area that you cover :
-                  </span>{" "}
-                  <span className="font-bold text-white text-xl">
-                    {" "}
-                    {`${radius} miles `}{" "}
-                  </span>
-                </p>
-              </div>
-            )}
-          </>
-        )}
-
-        {/*  show the notification if showNotification is true */}
-        {showNotification && (
-          <div className="fixed top-5 -left-3 w-full h-fit flex justify-end items-start z-10">
-            <div className="text-red-400 lg:py-8 bg-yellow-100 border-l-8 border-red-700  xl:text-2xl text-lg lg:font-bold  text-center lg:w-[30%] rounded-md p-3 flex items-center justify-center">
-              <FaExclamationTriangle className="mr-2" size={32} />
-              {currentStep === 2 && !validateEmail(email)
-                ? "Invalid Email format!"
-                : ""}
-              {currentStep === 3 && !validateWebsite(website)
-                ? "Invalid Website format!"
-                : "Field is required!"}
-              {currentStep === 4 && !validateWebsite(website)
-                ? "Field is required!"
-                : ""}
-              {currentStep === 6 && isNaN(radius.trim())
-                ? "Numeric value required!"
-                : ""}
-              {currentStep !== 2 && currentStep !== 3 && currentStep !== 6
-                ? "Field is required!"
-                : ""}
-            </div>
-          </div>
-        )}
-
-        {/* show the notification if invalidRadiusInput is true */}
-        {invalidRadiusInput && (
-          <div className="fixed top-5 -left-3 w-full h-fit flex justify-end items-start z-10">
-            <div className="text-red-400 lg:py-8 bg-yellow-100 border-l-8 border-red-700  lg:text-xl lg:font-bold  text-center lg:w-[30%] rounded-md p-4 flex items-center justify-center">
-              <FaExclamationTriangle className="mr-2" />
-              Numeric value required!
-            </div>
-          </div>
-        )}
-        {/*  sucess pop up of keywords generated */}
-        {showSuccessPopup && (
-          <div className="fixed top-5 lg:-left-3 -left-1 w-full h-fit flex justify-end items-start z-10">
-            <div
-              className="bg-green-200 lg:w-[35%] text-center flex text-sm xl:text-2xl  border-green-600 text-green-600 border-l-4 lg:py-6 p-4"
-              role="alert"
-            >
-              <p className="font-bold text-lg max-md:text-sm">Congratulations</p>
-              <p className="flex items-center text-lg max-md:text-sm ml-2">
-                Your keywords have been generated!{" "}
-                <ImHappy size={30} className="ml-6 max-md:text-sm max-md:ml-1" />
-              </p>
-            </div>
-          </div>
         )}
       </div>
     </>

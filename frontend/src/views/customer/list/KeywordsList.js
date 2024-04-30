@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faDownload } from '@fortawesome/free-solid-svg-icons'
+import { saveAs } from 'file-saver'; // A library to help with file saving
+import Papa from 'papaparse'; // A library to parse and generate CSV
 
 const KeywordsList = () => {
     const { id } = useParams();
@@ -94,12 +95,65 @@ const KeywordsList = () => {
         });
     };
 
+    // const handleDownloadCSV = () => {
+    //     const csvData = filteredCustomer.map((item, index) => ({
+    //         Sr: index + 1,
+    //         Name: customerName,
+    //         Email: customerEmail,
+    //         Keyword: item.keyword,
+    //         Link: item.link,
+    //     }));
+
+    //     const csvString = Papa.unparse(csvData);
+    //     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    //     saveAs(blob, 'keywords.csv'); // Download the CSV file
+    // };
+
+    const handleDownloadCSV = () => {
+        // Header row with common data
+        // const commonData = [{ Name: customerName, Email: customerEmail }];
+
+        // Data rows with unique information
+        const csvData = filteredCustomer.map((item, index) => ({
+            Sr: index + 1,
+            Keyword: item.keyword,
+            Link: item.link,
+        }));
+
+        // Combine common data and data rows
+        // const combinedData = csvData.concat(commonData);
+
+        // const combinedData = [...csvData, ...commonData];
+
+        // console.log(combinedData);
+
+        // const csvName = customerEmail;
+
+        // Convert to CSV string
+        const csvString = Papa.unparse(csvData);
+
+        // Create a blob and download the CSV file
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        saveAs(blob, `${customerEmail}.csv`);
+    };
+
+
     return (
         <div className="container mt-4">
             <div className="row">
                 <div className="col-md-12 d-flex justify-content-between align-items-center">
                     <div className="customer-info-header border-b border-gray-300 mb-3">
-                        <h1 className="text-xl font-bold text-indigo-700">Keywords List</h1>
+                        <div className="row">
+                            <div className="col-md-12 d-flex justify-content-between align-items-center">
+                                <h1 className="text-xl font-bold text-indigo-700">Keywords List</h1>
+                                <button
+                                className="text-center text-white rounded-full w-44 h-7 bg-[#4B0082] font-bold"
+                                    onClick={handleDownloadCSV}
+                                >
+                                    Download CSV <FontAwesomeIcon icon={faDownload} />
+                                </button>
+                            </div>
+                        </div>
                         <div className="customer-info-details flex items-center gap-4 mt-2">
                             <div className="customer-info-field">
                                 <label className="font-bold">Name:</label>
