@@ -83,16 +83,10 @@ Router.listOfCustomers = async (req, res) => {
 // List of Customers //
 Router.dashboardStatistics = async (req, res) => {
     try {
-        console.log("1");
         const totalSectors = await Sectors.count();
         const totalCustomers = await Customers.count();
         const totalServices = await Services.count();
-
-        console.log("totalSectors",totalSectors);
-        console.log("totalCustomers",totalCustomers);
-        console.log("totalServices",totalServices);
-
-
+        
         res.json({ status: 200, message: "Records Found", dataSectors: totalSectors, dataCustomers: totalCustomers, dataServices: totalServices });
     } catch (error) {
         res.json({ status: 500, error: 'An error occurred while retrieving the records.' });
